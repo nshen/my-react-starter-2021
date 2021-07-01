@@ -1,19 +1,8 @@
-import Head from "next/head";
 import styles from "../styles/Home.module.css"; // 命名规则 .module.css
 import ArticleList from "../components/ArticleList";
 
 export default function Home() {
-  return (
-    <div>
-      <ArticleList
-        articles={[
-          { title: "test 111111111111" },
-          { title: "test 22222222222" },
-          { title: "test 333" },
-        ]}
-      />
-    </div>
-  );
+  return <div>Next Starter</div>;
 }
 
 // export const getStaticProps = async () => {
