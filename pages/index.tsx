@@ -1,6 +1,8 @@
-import { Button, Stack } from "@chakra-ui/react";
+import { Button, Stack, useColorMode } from "@chakra-ui/react";
+import React from "react";
 
 export default function Home() {
+  const { colorMode, toggleColorMode } = useColorMode();
   return (
     <div>
       <Stack pt={2} direction="row" spacing={4} align="center">
@@ -13,8 +15,8 @@ export default function Home() {
         <Button colorScheme="teal" variant="ghost">
           Button
         </Button>
-        <Button colorScheme="teal" variant="link">
-          Button
+        <Button colorScheme="teal" variant="link" onClick={toggleColorMode}>
+          toggleColor
         </Button>
       </Stack>
     </div>
