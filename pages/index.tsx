@@ -1,5 +1,3 @@
-import styles from "../styles/Home.module.css"; // 命名规则 .module.css
-import ArticleList from "../components/ArticleList";
 import { Button, Stack } from "@chakra-ui/react";
 
 export default function Home() {
