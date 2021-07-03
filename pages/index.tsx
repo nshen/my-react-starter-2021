@@ -1,8 +1,26 @@
 import styles from "../styles/Home.module.css"; // 命名规则 .module.css
 import ArticleList from "../components/ArticleList";
+import { Button, Stack } from "@chakra-ui/react";
 
 export default function Home() {
-  return <div>Next Starter</div>;
+  return (
+    <div>
+      <Stack pt={2} direction="row" spacing={4} align="center">
+        <Button colorScheme="teal" variant="solid">
+          Button
+        </Button>
+        <Button colorScheme="teal" variant="outline">
+          Button
+        </Button>
+        <Button colorScheme="teal" variant="ghost">
+          Button
+        </Button>
+        <Button colorScheme="teal" variant="link">
+          Button
+        </Button>
+      </Stack>
+    </div>
+  );
 }
 
 // export const getStaticProps = async () => {
