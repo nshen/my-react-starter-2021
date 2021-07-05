@@ -1,24 +1,14 @@
-import { Button, Stack, useColorMode } from "@chakra-ui/react";
+import { Button, Text, Stack, useColorMode } from "@chakra-ui/react";
 import React from "react";
+import { useRecoilValue } from "recoil";
+import { countSelector } from "../states";
 
 export default function Home() {
   const { colorMode, toggleColorMode } = useColorMode();
+  const countValue = useRecoilValue(countSelector);
   return (
     <div>
-      <Stack pt={2} direction="row" spacing={4} align="center">
-        <Button colorScheme="teal" variant="solid">
-          Button
-        </Button>
-        <Button colorScheme="teal" variant="outline">
-          Button
-        </Button>
-        <Button colorScheme="teal" variant="ghost">
-          Button
-        </Button>
-        <Button colorScheme="teal" variant="link" onClick={toggleColorMode}>
-          toggleColor
-        </Button>
-      </Stack>
+      <Text>{countValue}</Text>
     </div>
   );
 }
