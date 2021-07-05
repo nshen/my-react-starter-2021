@@ -1,13 +1,14 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
-/*
+/*******************************************************
  自定义 theme
  default theme: https://chakra-ui.com/docs/theming/theme
+*******************************************************/
 
-*/
-
-// foundations
-// https://github.com/chakra-ui/chakra-ui/tree/main/packages/theme/src/foundations
+/**
+ *  foundations
+ *  https://github.com/chakra-ui/chakra-ui/tree/main/packages/theme/src/foundations
+ */
 const colors = {
   mycolor: {
     900: "#1a365d",
@@ -22,8 +23,12 @@ const fonts = {
   heading: `-apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif`,
 };
 
-// global styles
+/**
+ *  全局样式
+ *  https://chakra-ui.com/docs/features/global-styles
+ */
 const styles = {
+  // global styles
   global: {
     body: {
       fontFamily: "body",
@@ -32,41 +37,39 @@ const styles = {
   },
 };
 
-// component styles
-// https://github.com/chakra-ui/chakra-ui/tree/main/packages/theme/src/components
-/*
-    组成
-    const ComponentStyle = {
-    // style object for base or default style
-    baseStyle: {},
-    // styles for different sizes ("sm", "md", "lg")
-    sizes: {},
-    // styles for different visual variants ("outline", "solid")
-    variants: {},
-    // default values for `size` and `variant`
-    defaultProps: {
-        size: "",
-        variant: "",
-    },
-    };
-*/
+/**
+ *  component styles
+ * https://github.com/chakra-ui/chakra-ui/tree/main/packages/theme/src/components
+ *
+ * 由 baseStyle, sizes, variants, defaultProps 组成
+ *
+ *   const ComponentStyle = {
+ *       // style object for base or default style
+ *       baseStyle: {},
+ *       // styles for different sizes ("sm", "md", "lg")
+ *       sizes: {},
+ *       // styles for different visual variants ("outline", "solid")
+ *       variants: {},
+ *       // default values for `size` and `variant`
+ *       defaultProps: {
+ *           size: "",
+ *           variant: "",
+ *       },
+ *   };
+ */
+
 const components = {
   Button: {},
 };
+
+/**
+ *
+ */
 
 const config: ThemeConfig = {
   initialColorMode: "light",
   useSystemColorMode: true,
 };
-
-const overrides = {
-  colors,
-  fonts,
-  styles,
-  components,
-};
-
-const theme = extendTheme(overrides);
 
 /*
 
@@ -150,6 +153,14 @@ as
 </Button>
 */
 
+const overrides = {
+  colors,
+  fonts,
+  styles,
+  components,
+};
+
+const theme = extendTheme(overrides);
 export default theme;
 
 export function help() {
