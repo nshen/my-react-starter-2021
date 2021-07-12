@@ -1,6 +1,6 @@
 # my-react-starter-2021
 
-`Next.js` + `Chakra-ui` + `Recoil`
+`Next.js` + `Chakra-ui` + `Recoil` + `axios-hooks`
 
 ## 特性
 
@@ -9,6 +9,7 @@
   - `ts` 组件示例：[./components/Layout](./components/Layout/index.tsx)
 - `Server-Side Rendering` 示例：[./pages/static-demo.tsx](./pages/static-demo.tsx)
 - `Recoil` 状态管理，示例：[./pages/recoil-demo.tsx](./pages/recoil-demo.tsx)
+- `axios-hooks` 示例：[./pages/dynamic-demo.tsx](./pages/dynamic-demo.tsx)
 
 ## 命令
 
@@ -33,3 +34,4 @@ Container
 - https://recoiljs.org/
 - https://github.com/typescript-cheatsheets/
 - https://github.com/bradtraversy/next-crash-course
+- https://www.npmjs.com/package/axios-hooks
