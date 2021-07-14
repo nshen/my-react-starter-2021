@@ -62,96 +62,10 @@ const components = {
   Button: {},
 };
 
-/**
- *
- */
-
 const config: ThemeConfig = {
   initialColorMode: "light",
-  useSystemColorMode: true,
+  useSystemColorMode: false,
 };
-
-/*
-
-Pseudo
------
-  <Box
-    _hover={{ fontWeight: 'semibold' }}
-    _groupHover={{ color: 'tomato' }}
-  >
------
-
-_hover	:hover,
-[data-hover]	
-_active	:active,
-[data-active]	
-_focus	:focus,
-[data-focus]	
-_highlighted	[data-highlighted]	
-_focusWithin	:focus-within	
-_focusVisible	:focus-visible	
-_disabled	[disabled],
-[aria-disabled=true],
-[data-disabled]	
-_readOnly	[aria-readonly=true],
-[readonly],
-[data-readonly]	
-_before	::before	
-_after	::after	
-_empty	:empty	
-_expanded	[aria-expanded=true],
-[data-expanded]	
-_checked	[aria-checked=true],
-[data-checked]	
-_grabbed	[aria-grabbed=true],
-[data-grabbed]	
-_pressed	[aria-pressed=true],
-[data-pressed]	
-_invalid	[aria-invalid=true],
-[data-invalid]	
-_valid	[data-valid],
-[data-state=valid]	
-_loading	[data-loading],
-[aria-busy=true]	
-_selected	[aria-selected=true],
-[data-selected]	
-_hidden	[hidden],
-[data-hidden]	
-_autofill	:-webkit-autofill	
-_even	:nth-of-type(even)	
-_odd	:nth-of-type(odd)	
-_first	:first-of-type	
-_last	:last-of-type	
-_notFirst	:not(:first-of-type)	
-_notLast	:not(:last-of-type)	
-_visited	:visited	
-_activeLink	[aria-current=page]	
-_activeStep	[aria-current=step]	
-_indeterminate	:indeterminate,
-[aria-checked=mixed],
-[data-indeterminate]	
-_groupHover	[role=group]:hover &,
-[role=group][data-hover] &	
-_groupFocus	[role=group]:focus &,
-[role=group][data-focus] &	
-_groupActive	[role=group]:active &,
-[role=group][data-active] &	
-_groupDisabled	[role=group]:disabled &,
-[role=group][data-disabled] &	
-_groupInvalid	[role=group][data-invalid] &	
-_groupChecked	[role=group][data-checked] &	
-_placeholder	::placeholder	
-_fullScreen	:fullscreen	
-_selection	::selection	
-*/
-
-/*
-as
-
-<Button as="a" target="_blank" variant="outline" href="https://chakra-ui.com">
-  Hello
-</Button>
-*/
 
 const overrides = {
   colors,
@@ -163,7 +77,7 @@ const overrides = {
 const theme = extendTheme(overrides);
 export default theme;
 
-export function help() {
+export function themeHelp() {
   console.log("---- THEME HELP ----");
   console.log("w,h,minW,maxW,minH,maxH,boxSize -> theme.sizes");
   console.log(
