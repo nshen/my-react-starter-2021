@@ -7,14 +7,14 @@
 - 同时支持 `JavaScript` / `TypeScript` 开发
   - `js` 组件示例：[./components/ArticleList](./components/ArticleList/index.js)
   - `ts` 组件示例：[./components/Layout](./components/Layout/index.tsx)
-- `Server-Side Rendering` 示例：[./pages/static-demo.tsx](./pages/static-demo.tsx)
-- `Recoil` 状态管理，示例：[./pages/recoil-demo.tsx](./pages/recoil-demo.tsx)
-- `axios-hooks` 示例：[./pages/dynamic-demo.tsx](./pages/dynamic-demo.tsx)
+- `Server-Side Rendering` 示例：[./pages/examples/static-demo.tsx](./pages/examples/static-demo.tsx)
+- `Recoil` 状态管理，示例：[./pages/examples/recoil-demo.tsx](./pages/examples/recoil-demo.tsx)
+- `axios-hooks` 示例：[./pages/examples/dynamic-demo.tsx](./pages/examples/dynamic-demo.tsx)
 
 ## 命令
 
-- `yarn dev`
-- `yarn build`
+- `yarn dev` 开发
+- `yarn build:static` 发布静态网站
 - `yarn start`
 - `yarn export`
 
@@ -27,11 +27,75 @@ Container
     Footer
 ```
 
+## Tips
+
+- useState 支持 null 类型
+
+```typescript
+const [data, setData] = useState<null | String>(null);
+```
+
+- useState 修改现有的值
+
+```typescript
+const [isOpen, setIsOpen] = useState(false)
+<Toggle onClick={() => setIsOpen(isOpen => !isOpen)} />
+```
+
+- useRef
+
+```typescript
+function Foo() {
+  // 类型越详细越好 HTMLDivElement > HTMLElement > Element
+  const divRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // 要先判断是否存在
+    if (!divRef.current) throw Error("divRef is not assigned");
+    doSomethingWith(divRef.current);
+  });
+  // Give the ref to an element so React can manage it for you
+  return <div ref={divRef}>etc</div>;
+}
+```
+
+- useMemo
+
+  - You may rely on useMemo() as a performance optimization, not as a semantic guarantee
+  - Every value referenced inside the function should also appear in the dependencies array
+
+```typescript
+const memoizedResult = useMemo(() => computation(a, b), [a, b]);
+```
+
+- useCallback :
+
+[不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
+
+```typescript
+function MyComponent({ prop }) {
+  const callback = () => {
+    return "Result";
+  };
+  const memoizedCallback = useCallback(callback, [prop]);
+  // 这里保证传给 child 的 callback 不会变
+  return <ChildComponent callback={memoizedCallback} />;
+}
+```
+
 ## 参考
+
+官网
 
 - https://nextjs.org/
 - https://chakra-ui.com/
 - https://recoiljs.org/
-- https://github.com/typescript-cheatsheets/
-- https://github.com/bradtraversy/next-crash-course
 - https://www.npmjs.com/package/axios-hooks
+
+学习
+
+- https://github.com/bradtraversy/next-crash-course
+- https://github.com/typescript-cheatsheets/
+
+typescript + hooks
+
+- https://fettblog.eu/typescript-react/hooks
