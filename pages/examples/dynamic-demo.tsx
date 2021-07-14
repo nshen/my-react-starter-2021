@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useAxios from "axios-hooks";
-import ArticleList from "../components/ArticleList";
+import ArticleList from "../../components/ArticleList";
 import { Button, Flex } from "@chakra-ui/react";
 
 type ArticleType = { title: string };
@@ -11,13 +11,14 @@ const DynamicDemo = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error!</p>;
   if (data) {
+    const articles = data.map((article: any) => {
+      return {
+        title: article.title,
+      };
+    });
     return (
       <Flex direction="column" justify="flex-start" my="3">
-        <ArticleList
-          articles={data.map((article: any) => ({
-            title: article.title,
-          }))}
-        />
+        <ArticleList articles={articles} />
         <Button
           onClick={() => {
             refetch();

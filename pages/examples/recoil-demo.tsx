@@ -2,7 +2,7 @@ import React from "react";
 import { Flex, Box, Heading, Text, Button, Icon } from "@chakra-ui/react";
 import { Gi3DGlasses } from "react-icons/gi";
 import { useRecoilState, useResetRecoilState, useRecoilValue } from "recoil";
-import { countAtom, countSelector } from "../states";
+import { countAtom, countSelector } from "../../states";
 
 const RecoilDemo = () => {
   const [count, setCount] = useRecoilState(countAtom);
