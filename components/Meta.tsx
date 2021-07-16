@@ -8,6 +8,9 @@ const defaultProps = {
   description: "next starter",
 };
 
+/**
+ *  页面 Meta 数据，包括 title， keywords，description
+ */
 const Meta = ({ title, keywords, description }: MetaProps) => {
   return (
     <Head>

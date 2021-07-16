@@ -27,6 +27,47 @@ Container
     Footer
 ```
 
+## 多语言
+
+多语言是基于 `next.js` 系统自己实现的，支持实时切换语言
+
+首先修改 `next.config.js`
+
+```js
+  i18n: {
+    localeDetection: false,
+    locales: ["zh-CN", "en-US"],
+    defaultLocale: "en-US",
+  },
+```
+
+然后配置 `/i18n/config.ts` 修改 `map`，对应到语言文件
+
+```ts
+import en from "./locales/en-US";
+import zh from "./locales/zh-CN";
+
+export const localeMap = {
+  "en-US": en,
+  "zh-CN": zh,
+};
+```
+
+之后就可以在需要翻译的页面上调用
+
+```ts
+const { t, locale, setLocale } = useI18n();
+// t: { language:'语言' }
+// locale: 'zh-CN'
+// setLocale: (local:string) => void
+```
+
+在需要翻译的地方，可以使用 t 下的属性
+
+```tsx
+<h1>{t.name}</h1>
+```
+
 ## Tips
 
 - useState 支持 null 类型

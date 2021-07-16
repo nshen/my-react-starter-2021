@@ -2,6 +2,7 @@ import nextConfig from "../next.config";
 import en from "./locales/en-US";
 import zh from "./locales/zh-CN";
 
+// 复用 next.config.js 的配置
 export const defaultLocale = nextConfig.i18n.defaultLocale;
 
 /****************************************************

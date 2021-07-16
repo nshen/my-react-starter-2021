@@ -31,6 +31,13 @@ export const I18nProvider = ({ children }: Props) => {
   return <>{children}</>;
 };
 
+/**
+ * 返回 {t , locale, setLocale}
+ * 其中：
+ * t: { language:'语言' }
+ * locale: 'zh-CN'
+ * setLocale: (local:string) => void
+ */
 export const useI18n = () => {
   return useContext(I18nContext);
 };
