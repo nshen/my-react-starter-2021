@@ -1,8 +1,8 @@
 # my-react-starter-2021
 
-`Next.js` + `Chakra-ui` + `Recoil` + `axios-hooks`
+> 学习并使用 2021 年最酷的前端技术栈。
 
-学习并使用 2021 年最酷的前端技术栈。
+`Next.js` + `Chakra-ui` + `Recoil` + `axios-hooks` + `...`
 
 ## 版本历史
 
