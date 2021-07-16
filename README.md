@@ -2,12 +2,25 @@
 
 `Next.js` + `Chakra-ui` + `Recoil` + `axios-hooks`
 
+学习并使用 2021 年最酷的前端技术栈。
+
+## 版本历史
+
+- v0.1.0 : 初始 [next.js](https://nextjs.org/) 框架 (`typescript`)
+- v0.1.1 : 添加 `prettier` 配置, 添加 layout 组件，添加 `Static Generation` 示例
+- v0.1.2 : 添加 [chakra-ui](https://chakra-ui.com/) 框架，[recoil](https://recoiljs.org/) 状态管理库
+- v0.1.3 : 添加了 [axios-hooks](https://www.npmjs.com/package/axios-hooks) 用于数据请求
+- v0.1.4 : 重构了页面目录，增加了一个 React.momo 示例，一个 [framer-motion](https://github.com/framer/motion) 示例
+- v0.1.5 : 扩展 `next.js` 实现了 `i18n` 功能
+
+> 持续更新中...
+
 ## 特性
 
 - 同时支持 `JavaScript` / `TypeScript` 开发
   - `js` 组件示例：[./components/ArticleList](./components/ArticleList/index.js)
   - `ts` 组件示例：[./components/Layout](./components/Layout/index.tsx)
-- `Server-Side Rendering` 示例：[./pages/examples/static-demo.tsx](./pages/examples/static-demo.tsx)
+- `Static Generation` 示例：[./pages/examples/static-demo.tsx](./pages/examples/static-demo.tsx)
 - `Recoil` 状态管理，示例：[./pages/examples/recoil-demo.tsx](./pages/examples/recoil-demo.tsx)
 - `axios-hooks` 示例：[./pages/examples/dynamic-demo.tsx](./pages/examples/dynamic-demo.tsx)
 
