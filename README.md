@@ -4,6 +4,23 @@
 
 `Next.js` + `Chakra-ui` + `Recoil` + `axios-hooks` + `...`
 
+- [版本历史](#版本历史)
+- [特性](#特性)
+  - [多语言](#多语言)
+- [Hooks 技巧](#hooks)
+  - [useState](#usestate)
+  - [useReducer](#usereducer)
+  - [useEffect](#useeffect)
+  - [useLayoutEffect](#uselayouteffect)
+  - [useRef](#useref)
+  - [useMemo](#usememo)
+  - [useCallback](#usecallback)
+  - [useAxios](#useaxios)
+  - [useI18n](#多语言)
+- [命令](#命令)
+- [Layout](#Layout)
+- [参考](#参考)
+
 ## 版本历史
 
 - v0.1.0 : 初始 [next.js](https://nextjs.org/) 框架 (`typescript`)
@@ -24,25 +41,9 @@
 - `Recoil` 状态管理，示例：[./pages/examples/recoil-demo.tsx](./pages/examples/recoil-demo.tsx)
 - `axios-hooks` 示例：[./pages/examples/dynamic-demo.tsx](./pages/examples/dynamic-demo.tsx)
 
-## 命令
+### 多语言
 
-- `yarn dev` 开发
-- `yarn build:static` 发布静态网站
-- `yarn start`
-- `yarn export`
-
-## Layout
-
-```
-Container
-    Nav
-    main
-    Footer
-```
-
-## 多语言
-
-多语言是基于 `next.js` 系统自己实现的，支持实时切换语言
+多语言是基于 `next.js` 系统自己实现了 `useI18n()` hooks，支持实时切换语言
 
 首先修改 `next.config.js`
 
@@ -81,22 +82,154 @@ const { t, locale, setLocale } = useI18n();
 <h1>{t.name}</h1>
 ```
 
-## Tips
+## 命令
 
-- useState 支持 null 类型
+- `yarn dev` 开发
+- `yarn build:static` 发布静态网站
+- `yarn start`
+- `yarn export`
+
+## Layout
+
+```
+Container
+    Nav
+    main
+    Footer
+```
+
+## Hooks
+
+### useState
+
+监听事件，调用 setState，如果 state 不同，则 React 会安排一次重新渲染。
+
+- useState 在用 typescript 时接受 null 类型
 
 ```typescript
 const [data, setData] = useState<null | String>(null);
 ```
 
-- useState 修改现有的值
+- useState 修改现有的值，传递一个函数作为参数
 
 ```typescript
 const [isOpen, setIsOpen] = useState(false)
 <Toggle onClick={() => setIsOpen(isOpen => !isOpen)} />
 ```
 
-- useRef
+- useState 复制原有 state，只修改其中一部分
+
+```typescript
+function handleClick(index) {
+  setState((state) => {
+    return {
+      ...state,
+      bookableIndex: index,
+    };
+  });
+}
+```
+
+- 如果 useState 初始值的计算非常 expensive，那么传递一个函数作为初始值，这样 React 只会在第一次调用组件时计算
+
+```ts
+const [value, setValue] = useState(() => {
+  // expensive calculation here
+  return initialState;
+});
+```
+
+## useReducer
+
+> When you find you always need to update multiple state values together or your state update
+> logic is so spread out that it’s hard to follow, it might be time to define a function to
+> manage state updates for you: a reducer function
+
+- todo...
+
+## useEffect
+
+什么是 Side Effects
+
+> Component side effects
+> React components generally transform state into UI. When component code performs
+> actions outside this main focus—perhaps fetching data like blog posts or stock
+> prices srom the network, setting up a subscription to an online service, or directly
+> interacting with the DOM to focus form fields or measure element dimensions—we
+> describe those actions as component side effects.
+
+- 每次渲染后调用
+
+```ts
+useEffect(() => {
+  console.log("Running side effects after every render");
+});
+```
+
+- 仅在组件 `mount` 时调用
+
+```ts
+useEffect(() => {
+  // 第二个参数传空数组
+}, []);
+```
+
+- 在依赖变量改变时调用
+
+```ts
+useEffect(() => {
+  // perform effect
+  // that uses dep1 and dep2
+}, [dep1, dep2]);
+```
+
+- 清理，return 一个清理函数
+
+```ts
+useEffect(() => {
+  function handleResize() {
+    setSize(getSize()); // 浏览器大小改变，安排一次重新渲染
+  }
+  window.addEventListener("resize", handleResize);
+  return () => {
+    window.removeEventListener("resize", handleResize);
+  };
+}, []);
+```
+
+- async callback
+
+```ts
+//错误代码
+useEffect(async () => {
+  const resp = await fetch("http://localhost:3001/users");
+  const data = await resp.json();
+  setUsers(data);
+}, []);
+```
+
+由于 `useEffect`需要同步返回一个清理函数，`async` 函数返回的是一个 `promise`，所以会报错
+
+正确方式是把异步访问放在同步函数内部
+
+```ts
+useEffect(() => {
+  async function getUsers() {
+    const resp = await fetch(url);
+    const data = await resp.json();
+    setUsers(data);
+  }
+  getUsers();
+}, []);
+```
+
+## useLayoutEffect
+
+多数情况下，`side effect` 都是在组件渲染之后同步。 特殊情况下，这个时候如果更新了`state`导致再重绘，会出现一个中间状态渲染，导致闪烁的情况。
+这个时候可以尝试把 `useEffect`改成 `useLayoutEffect`，表示在 DOM 更新后，但浏览器还没有重绘的时候处理。
+大多数时候都不需要用到 `useLayoutEffect`，应该在出现问题的时候再尝试使用。
+
+## useRef
 
 ```typescript
 function Foo() {
@@ -112,16 +245,16 @@ function Foo() {
 }
 ```
 
-- useMemo
+## useMemo
 
-  - You may rely on useMemo() as a performance optimization, not as a semantic guarantee
-  - Every value referenced inside the function should also appear in the dependencies array
+- You may rely on useMemo() as a performance optimization, not as a semantic guarantee
+- Every value referenced inside the function should also appear in the dependencies array
 
 ```typescript
 const memoizedResult = useMemo(() => computation(a, b), [a, b]);
 ```
 
-- useCallback :
+## useCallback
 
 [不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
 
@@ -135,6 +268,10 @@ function MyComponent({ prop }) {
   return <ChildComponent callback={memoizedCallback} />;
 }
 ```
+
+## useAxios
+
+[演示](./pages/examples/dynamic-demo.tsx)
 
 ## 参考
 
