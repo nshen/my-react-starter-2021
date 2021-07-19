@@ -13,8 +13,9 @@
   - [useEffect](#useeffect)
   - [useLayoutEffect](#uselayouteffect)
   - [useRef](#useref)
-  - [useMemo](#usememo)
   - [useCallback](#usecallback)
+  - [useMemo](#usememo)
+  - [useContext](#usecontext)
   - [useAxios](#useaxios)
   - [useI18n](#多语言)
 - [命令](#命令)
@@ -183,6 +184,8 @@ useEffect(() => {
 }, [dep1, dep2]);
 ```
 
+如果用到 `parent` 组件传进来的 `setState` 或者 `dispatch` 函数，记得添加到依赖里
+
 - 清理，return 一个清理函数
 
 ```ts
@@ -225,11 +228,43 @@ useEffect(() => {
 
 ## useLayoutEffect
 
-多数情况下，`side effect` 都是在组件渲染之后同步。 特殊情况下，这个时候如果更新了`state`导致再重绘，会出现一个中间状态渲染，导致闪烁的情况。
+多数情况下，`side effect` 都是在组件渲染之后同步。 某些特殊情况下副作用导致了立即再重绘，相当于多出来一个中间状态渲染，两次连续渲染导致闪烁的情况出现。
 这个时候可以尝试把 `useEffect`改成 `useLayoutEffect`，表示在 DOM 更新后，但浏览器还没有重绘的时候处理。
 大多数时候都不需要用到 `useLayoutEffect`，应该在出现问题的时候再尝试使用。
 
 ## useRef
+
+- 与 useState 一样可以保存状态，但不引起重渲染
+
+```ts
+const ref = useRef(42);
+ref.current; // 42
+```
+
+- 保存 timer ID
+
+```ts
+const timerRef = useRef(null);
+useEffect(() => {
+  timerRef.current = setInterval(() => {
+    dispatch({ type: "NEXT_BOOKABLE" });
+  }, 3000);
+  return () => {
+    clearInterval(timerRef.current);
+  };
+}, []);
+
+//  。。。
+<button
+  onClick={() => {
+    clearInterval(timerRef.current);
+  }}
+>
+  Stop
+</button>;
+```
+
+- 保存 DOM 引用
 
 ```typescript
 function Foo() {
@@ -245,18 +280,9 @@ function Foo() {
 }
 ```
 
-## useMemo
-
-- You may rely on useMemo() as a performance optimization, not as a semantic guarantee
-- Every value referenced inside the function should also appear in the dependencies array
-
-```typescript
-const memoizedResult = useMemo(() => computation(a, b), [a, b]);
-```
-
 ## useCallback
 
-[不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
+`useCallback` 保证每次渲染都返回同一个 `function`
 
 ```typescript
 function MyComponent({ prop }) {
@@ -268,6 +294,21 @@ function MyComponent({ prop }) {
   return <ChildComponent callback={memoizedCallback} />;
 }
 ```
+
+[不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
+
+## useMemo
+
+- You may rely on useMemo() as a performance optimization, not as a semantic guarantee
+- Every value referenced inside the function should also appear in the dependencies array
+
+```typescript
+const memoizedResult = useMemo(() => expensiveFn(a, b), [a, b]);
+```
+
+## useContext
+
+示例见 [./i18n/Context](./i18n/Context.tsx)
 
 ## useAxios
 
