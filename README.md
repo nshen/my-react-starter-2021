@@ -8,18 +8,22 @@
 - [特性](#特性)
   - [多语言](#多语言)
 - [Hooks 技巧](#hooks)
-  - [useState](#usestate)
-  - [useReducer](#usereducer)
-  - [useEffect](#useeffect)
-  - [useLayoutEffect](#uselayouteffect)
-  - [useRef](#useref)
-  - [useCallback](#usecallback)
-  - [useMemo](#usememo)
-  - [useContext](#usecontext)
-  - [useAxios](#useaxios)
-  - [useI18n](#多语言)
+  - React
+    - [useState](#usestate)
+    - [useReducer](#usereducer)
+    - [useEffect](#useeffect)
+    - [useLayoutEffect](#uselayouteffect)
+    - [useRef](#useref)
+    - [useCallback](#usecallback)
+    - [useMemo](#usememo)
+    - [useContext](#usecontext)
+  - Third party
+    - [useAxios](#useaxios)
+    - [useRecoilState](#userecoilstate)
+  - Custom
+    - [useI18n](#多语言)
 - [命令](#命令)
-- [Layout](#Layout)
+- [Layout](#layout)
 - [参考](#参考)
 
 ## 版本历史
@@ -31,7 +35,7 @@
 - v0.1.4 : 重构了页面目录，增加了一个 React.momo 示例，一个 [framer-motion](https://github.com/framer/motion) 示例
 - v0.1.5 : 扩展 `next.js` 实现了 `i18n` 功能
 
-> 持续更新中...
+> 持续丰富中...
 
 ## 特性
 
@@ -98,6 +102,8 @@ Container
     main
     Footer
 ```
+
+// TODO
 
 ## Hooks
 
@@ -295,7 +301,7 @@ function MyComponent({ prop }) {
 }
 ```
 
-[不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
+建议 [不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
 
 ## useMemo
 
@@ -308,11 +314,94 @@ const memoizedResult = useMemo(() => expensiveFn(a, b), [a, b]);
 
 ## useContext
 
+- 要把 Provider 抽取出来独立的类管理状态，注意不要重渲染整个树
+
 示例见 [./i18n/Context](./i18n/Context.tsx)
 
 ## useAxios
 
-[演示](./pages/examples/dynamic-demo.tsx)
+```ts
+const [{ data, loading, error }, refetch] = useAxios(
+  "https://jsonplaceholder.typicode.com/posts"
+);
+if (loading) return <p>Loading...</p>;
+if (error) return <p>Error!</p>;
+if (data) {
+  const articles = data.map((article: any) => {
+    return {
+      title: article.title,
+    };
+  });
+  return (
+    <Flex direction="column" justify="flex-start" my="3">
+      <ArticleList articles={articles} />
+      <Button
+        onClick={() => {
+          refetch();
+        }}
+      >
+        refetch
+      </Button>
+    </Flex>
+  );
+}
+```
+
+[完整示例](./pages/examples/dynamic-demo.tsx)
+
+## useRecoilState
+
+`atom` 是 `recoil` 版本的 `state`
+
+```ts
+const countAtom = atom({
+  key: "count-atom",
+  default: 1,
+});
+```
+
+之后就可以跟 `setState` 一样使用了
+
+```ts
+const [count, setCount] = useRecoilState(countAtom);
+const readOnlyCount = useRecoilValue(countAtom); // 只读版本
+```
+
+`selector` 可以对 `atom` 进行修改并返回
+
+```ts
+export const countSelector = selector({
+  key: "count-selector",
+  get: ({ get }) => {
+    const count = get(countAtom); // 取countAtom，修改
+    return count + "em";
+  },
+});
+```
+
+`selector` 同 `atom` 一样可订阅
+
+```ts
+const iconSize = useRecoilValue(countSelector);
+```
+
+`selector` 甚至可以 `set`
+
+```ts
+export const countSelector = selector<string | number>({
+  key: "count-selector",
+  get: ({ get }) => {
+    const count = get(countAtom); // 取countAtom，修改
+    return count + "em";
+  },
+  set: ({ set }, newValue) => {
+    const value = parseInt((newValue as string).slice(0, -2));
+    set(countAtom, value);
+  },
+});
+```
+
+[完整示例](./pages/examples/recoil-demo.tsx)
 
 ## 参考
 
@@ -327,7 +416,5 @@ const memoizedResult = useMemo(() => expensiveFn(a, b), [a, b]);
 
 - https://github.com/bradtraversy/next-crash-course
 - https://github.com/typescript-cheatsheets/
-
-typescript + hooks
-
 - https://fettblog.eu/typescript-react/hooks
+- https://course.learnrecoil.com/
