@@ -365,6 +365,7 @@ const countAtom = atom({
 ```ts
 const [count, setCount] = useRecoilState(countAtom);
 const readOnlyCount = useRecoilValue(countAtom); // 只读版本
+const setOnlyCount = useSetRecoilState(countAtom); // 只写版本
 ```
 
 `selector` 可以对 `atom` 进行修改并返回
