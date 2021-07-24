@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, selector, atomFamily } from "recoil";
 
 export const countAtom = atom({
   key: "count-atom",
@@ -11,4 +11,10 @@ export const countSelector = selector({
     const count = get(countAtom); // 取countAtom，修改
     return count + "em";
   },
+});
+
+// 类型为 < 数据类型，id 类型>
+export const elementPositionStateFamily = atomFamily<number[], number>({
+  key: "ElementPosition",
+  default: [0, 0],
 });

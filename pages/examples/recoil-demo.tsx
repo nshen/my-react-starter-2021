@@ -2,12 +2,19 @@ import React from "react";
 import { Flex, Box, Heading, Text, Button, Icon } from "@chakra-ui/react";
 import { Gi3DGlasses } from "react-icons/gi";
 import { useRecoilState, useResetRecoilState, useRecoilValue } from "recoil";
-import { countAtom, countSelector } from "../../states";
+import {
+  countAtom,
+  countSelector,
+  elementPositionStateFamily,
+} from "../../states";
 
 const RecoilDemo = () => {
   const [count, setCount] = useRecoilState(countAtom);
   const resetCount = useResetRecoilState(countAtom);
   const iconSize = useRecoilValue(countSelector);
+  const [element, setElement] = useRecoilState<number[]>(
+    elementPositionStateFamily(123)
+  );
   return (
     <Flex direction="column" alignItems="center" w="100vw" p="5">
       <Heading>Recoil</Heading>

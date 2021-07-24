@@ -22,6 +22,7 @@
     - [useRecoilState](#userecoilstate)
   - Custom
     - [useI18n](#多语言)
+- [Chakra-UI](#chakrui)]
 - [命令](#命令)
 - [Layout](#layout)
 - [参考](#参考)
@@ -86,6 +87,10 @@ const { t, locale, setLocale } = useI18n();
 ```tsx
 <h1>{t.name}</h1>
 ```
+
+## Chakra-UI
+
+TODO
 
 ## 命令
 
@@ -152,7 +157,7 @@ const [value, setValue] = useState(() => {
 > logic is so spread out that it’s hard to follow, it might be time to define a function to
 > manage state updates for you: a reducer function
 
-- todo...
+`useReducer` 是 `useState` 的进化版本， 避免直接修改状态，使用 `dispatcher` 广播事件到 `reducer` 函数里统一处理，个人觉得没有必要。
 
 ## useEffect
 
@@ -314,9 +319,12 @@ const memoizedResult = useMemo(() => expensiveFn(a, b), [a, b]);
 
 ## useContext
 
-- 要把 Provider 抽取出来独立的类管理状态，注意不要重渲染整个树
+- 只用来存储不常变的数据
+- 注意要把 `Provider` 抽取出来独立的类管理状态，避免用来管理树顶层 `state`，会重渲染整个树
 
-示例见 [./i18n/Context](./i18n/Context.tsx)
+  示例见 [./i18n/Context](./i18n/Context.tsx)
+
+- 建议使用 `Recoil` 的 `atom` 代替 `Context`
 
 ## useAxios
 
@@ -403,6 +411,56 @@ export const countSelector = selector<string | number>({
 ```
 
 [完整示例](./pages/examples/recoil-demo.tsx)
+
+`atomFamily()` 是一个 [utils 函数](https://recoiljs.org/zh-hans/docs/api-reference/utils/atomFamily/)，返回一个 atom 工厂函数，传入该函数唯一的 `id`，则返回唯一的 `atom`
+
+```ts
+// 类型为 < 数据类型，id 类型>
+const elementPositionStateFamily = atomFamily<number[], number>({
+  key: "ElementPosition",
+  default: [0, 0],
+});
+
+// 创建 atom
+elementPositionStateFamily(1); // atom1
+elementPositionStateFamily(2); // atom2
+elementPositionStateFamily(3); // atom3
+```
+
+`selectorFamily()`
+
+```ts
+const myNumberState = atom({
+  key: "MyNumber",
+  default: 2,
+});
+
+const myMultipliedState = selectorFamily({
+  key: "MyMultipliedNumber",
+  get:
+    (multiplier) =>
+    ({ get }) => {
+      return get(myNumberState) * multiplier;
+    },
+
+  // optional set
+  set:
+    (multiplier) =>
+    ({ set }, newValue) => {
+      set(myNumberState, newValue / multiplier);
+    },
+});
+
+function MyComponent() {
+  // defaults to 2
+  const number = useRecoilValue(myNumberState);
+
+  // defaults to 200
+  const multipliedNumber = useRecoilValue(myMultipliedState(100));
+
+  return <div>...</div>;
+}
+```
 
 ## 参考
 

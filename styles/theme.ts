@@ -14,7 +14,7 @@ const colors = {
     900: "#1a365d",
     800: "#153e75",
     700: "#2a69ac",
-    test: "#000000",
+    // test: "#000000",
   },
 };
 
@@ -32,7 +32,7 @@ const styles = {
   global: {
     body: {
       fontFamily: "body",
-      color: "mycolor.test",
+      //   color: "mycolor.test",
     },
   },
 };
