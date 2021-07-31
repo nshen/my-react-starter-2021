@@ -7,6 +7,8 @@
 - [版本历史](#版本历史)
 - [特性](#特性)
   - [多语言](#多语言)
+  - [Immer](#immer)
+  - [Chakra-UI](#chakra-ui)
 - [Hooks 技巧](#hooks)
   - React
     - [useState](#usestate)
@@ -22,7 +24,6 @@
     - [useRecoilState](#userecoilstate)
   - Custom
     - [useI18n](#多语言)
-- [Chakra-UI](#chakrui)]
 - [命令](#命令)
 - [Layout](#layout)
 - [参考](#参考)
@@ -35,6 +36,7 @@
 - v0.1.3 : 添加了 [axios-hooks](https://www.npmjs.com/package/axios-hooks) 用于数据请求
 - v0.1.4 : 重构了页面目录，增加了一个 React.momo 示例，一个 [framer-motion](https://github.com/framer/motion) 示例
 - v0.1.5 : 扩展 `next.js` 实现了 `i18n` 功能
+- v0.1.6 : 添加了 [immer](https://immerjs.github.io/immer/) 状态管理库
 
 > 持续丰富中...
 
@@ -150,6 +152,60 @@ const [value, setValue] = useState(() => {
   return initialState;
 });
 ```
+
+### Immer
+
+如果 `state` 是 一个 `object` , 那么不可以直接修改，而应该先拷贝一个新的 state 再修改，会比较麻烦。
+这个时候就可以使用 `Immer` 的 `produce` 函数，更好的控制 state 的更新
+
+```ts
+import produce from "immer";
+
+interface State {
+  readonly x: number;
+}
+
+// `x` cannot be modified here
+const state: State = {
+  x: 0,
+};
+
+const newState = produce(state, (draft) => {
+  // `x` can be modified here
+  draft.x++;
+});
+```
+
+在 `setState` 中用 `Immer`
+
+比如有如下 `state`
+
+```ts
+type ArticleType = { title: string };
+const [articles, setArticles] = useState<ArticleType[]>([]);
+```
+
+则可以
+
+```ts
+setArticles((articles) => {
+  return produce(articles, (draft) => {
+    draft.push({ title: `随机Title ${new Date().toISOString()}` });
+  });
+});
+```
+
+在用来设置 `state` 的时候，可简写
+
+```ts
+setArticles(
+  produce((draft) => {
+    draft.push({ title: `随机Title ${new Date().toISOString()}` });
+  })
+);
+```
+
+示例见 [./pages/examples/dynamic-immer.tsx](./pages/examples/dynamic-immer.tsx)
 
 ## useReducer
 
@@ -362,7 +418,8 @@ if (data) {
 `atom` 是 `recoil` 版本的 `state`
 
 ```ts
-const countAtom = atom({
+const countAtom = atom<number>({
+  // <number> 是 default 的类型, 可省略自行推断
   key: "count-atom",
   default: 1,
 });
@@ -379,7 +436,8 @@ const setOnlyCount = useSetRecoilState(countAtom); // 只写版本
 `selector` 可以对 `atom` 进行修改并返回
 
 ```ts
-export const countSelector = selector({
+export const countSelector = selector<string>({
+  // <string> 是 get 返回的类型
   key: "count-selector",
   get: ({ get }) => {
     const count = get(countAtom); // 取countAtom，修改
@@ -415,7 +473,7 @@ export const countSelector = selector<string | number>({
 `atomFamily()` 是一个 [utils 函数](https://recoiljs.org/zh-hans/docs/api-reference/utils/atomFamily/)，返回一个 atom 工厂函数，传入该函数唯一的 `id`，则返回唯一的 `atom`
 
 ```ts
-// 类型为 < 数据类型，id 类型>
+// 类型为 < default 数据类型，id 类型>
 const elementPositionStateFamily = atomFamily<number[], number>({
   key: "ElementPosition",
   default: [0, 0],
@@ -427,7 +485,26 @@ elementPositionStateFamily(2); // atom2
 elementPositionStateFamily(3); // atom3
 ```
 
-`selectorFamily()`
+`selectorFamily<返回类型，参数类型>()`
+
+```ts
+const editState = selectorFamily<number, string>({
+  key: "editState",
+  get: (path: string) => () => {
+    return 1;
+  },
+  set:
+    (path: string) =>
+    ({ set }, newValue) => {
+      //   set( someAtom,newValue);
+    },
+});
+
+// in components
+useRecoilValue(editState("mypath/abc"));
+```
+
+例子:
 
 ```ts
 const myNumberState = atom({
@@ -477,3 +554,8 @@ function MyComponent() {
 - https://github.com/typescript-cheatsheets/
 - https://fettblog.eu/typescript-react/hooks
 - https://course.learnrecoil.com/
+- Hooks
+  - https://github.com/streamich/react-use
+  - https://github.com/rehooks/awesome-react-hooks
+  - https://usehooks.com/
+  - https://ahooks.js.org/
