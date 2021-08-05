@@ -19,14 +19,17 @@
     "axios-hooks": "^2.6.3",
     "framer-motion": "^4",
     "immer": "^9.0.5",
+    "namor": "^2.0.3",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "^4.2.0",
+    "react-table": "^7.7.0",
     "recoil": "^0.3.1"
   },
   "devDependencies": {
     "@types/react": "17.0.11",
+    "@types/react-table": "^7.7.2",
     "eslint": "7.29.0",
     "eslint-config-next": "11.0.1",
     "eslint-config-prettier": "^8.3.0",
