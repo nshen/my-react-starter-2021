@@ -5,10 +5,15 @@
 `Next.js` + `Chakra-ui` + `Recoil` + `axios-hooks` + `...`
 
 - [版本历史](#版本历史)
-- [特性](#特性)
-  - [多语言](#多语言)
-  - [Immer](#immer)
+- [命令](#命令)
+- [示例](#示例)
+  - [Next.js](#nextjs)
+    - [TS / JS 混合开发](#nextjs)
+    - [Static Generation](#nextjs)
+    - [多语言](#多语言)
   - [Chakra-UI](#chakra-ui)
+  - [Recoil](#recoil)
+  - [Immer](#immer)
 - [Hooks 技巧](#hooks)
   - React
     - [useState](#usestate)
@@ -24,7 +29,6 @@
     - [useRecoilState](#userecoilstate)
   - Custom
     - [useI18n](#多语言)
-- [命令](#命令)
 - [Layout](#layout)
 - [参考](#参考)
 
@@ -38,18 +42,27 @@
 - v0.1.5 : 扩展 `next.js` 实现了 `i18n` 功能
 - v0.1.6 : 添加了 [immer](https://immerjs.github.io/immer/) 状态管理库
 
+TODO:
+
+- https://www.prisma.io/
+- https://trpc.io/
+
 > 持续丰富中...
 
-## 特性
+## 示例
 
-- 同时支持 `JavaScript` / `TypeScript` 开发
-  - `js` 组件示例：[./components/ArticleList](./components/ArticleList/index.js)
-  - `ts` 组件示例：[./components/Layout](./components/Layout/index.tsx)
-- `Static Generation` 示例：[./pages/examples/static-demo.tsx](./pages/examples/static-demo.tsx)
-- `Recoil` 状态管理，示例：[./pages/examples/recoil-demo.tsx](./pages/examples/recoil-demo.tsx)
-- `axios-hooks` 示例：[./pages/examples/dynamic-demo.tsx](./pages/examples/dynamic-demo.tsx)
+### Nextjs
 
-### 多语言
+#### 同时支持 `JavaScript` / `TypeScript` 开发
+
+- `js` 组件示例：[./components/ArticleList](./components/ArticleList/index.js)
+- `ts` 组件示例：[./components/Layout](./components/Layout/index.tsx)
+
+#### Static Generation
+
+- 示例：[./pages/examples/static-demo.tsx](./pages/examples/static-demo.tsx)
+
+#### 多语言
 
 多语言是基于 `next.js` 系统自己实现了 `useI18n()` hooks，支持实时切换语言
 
@@ -66,12 +79,12 @@
 然后配置 `/i18n/config.ts` 修改 `map`，对应到语言文件
 
 ```ts
-import en from "./locales/en-US";
-import zh from "./locales/zh-CN";
+import en from './locales/en-US';
+import zh from './locales/zh-CN';
 
 export const localeMap = {
-  "en-US": en,
-  "zh-CN": zh,
+  'en-US': en,
+  'zh-CN': zh,
 };
 ```
 
@@ -90,9 +103,24 @@ const { t, locale, setLocale } = useI18n();
 <h1>{t.name}</h1>
 ```
 
-## Chakra-UI
+### Recoil
 
-TODO
+- `Recoil` 状态管理，示例：[./pages/examples/recoil-demo.tsx](./pages/examples/recoil-demo.tsx)
+- [useRecoilState](#userecoilstate)
+
+### axios-hooks
+
+- `axios-hooks` 示例：[./pages/examples/dynamic-demo.tsx](./pages/examples/dynamic-demo.tsx)
+- [useAxios](#useaxios)
+
+### Chakra-UI
+
+- TODO
+
+### 架构技巧
+
+- TODO
+- atom 状态(查询参数)更新 -> 自动查询数据-> 页面刷新
 
 ## 命令
 
@@ -159,7 +187,7 @@ const [value, setValue] = useState(() => {
 这个时候就可以使用 `Immer` 的 `produce` 函数，更好的控制 state 的更新
 
 ```ts
-import produce from "immer";
+import produce from 'immer';
 
 interface State {
   readonly x: number;
@@ -230,7 +258,7 @@ setArticles(
 
 ```ts
 useEffect(() => {
-  console.log("Running side effects after every render");
+  console.log('Running side effects after every render');
 });
 ```
 
@@ -260,9 +288,9 @@ useEffect(() => {
   function handleResize() {
     setSize(getSize()); // 浏览器大小改变，安排一次重新渲染
   }
-  window.addEventListener("resize", handleResize);
+  window.addEventListener('resize', handleResize);
   return () => {
-    window.removeEventListener("resize", handleResize);
+    window.removeEventListener('resize', handleResize);
   };
 }, []);
 ```
@@ -272,7 +300,7 @@ useEffect(() => {
 ```ts
 //错误代码
 useEffect(async () => {
-  const resp = await fetch("http://localhost:3001/users");
+  const resp = await fetch('http://localhost:3001/users');
   const data = await resp.json();
   setUsers(data);
 }, []);
@@ -314,7 +342,7 @@ ref.current; // 42
 const timerRef = useRef(null);
 useEffect(() => {
   timerRef.current = setInterval(() => {
-    dispatch({ type: "NEXT_BOOKABLE" });
+    dispatch({ type: 'NEXT_BOOKABLE' });
   }, 3000);
   return () => {
     clearInterval(timerRef.current);
@@ -339,7 +367,7 @@ function Foo() {
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     // 要先判断是否存在
-    if (!divRef.current) throw Error("divRef is not assigned");
+    if (!divRef.current) throw Error('divRef is not assigned');
     doSomethingWith(divRef.current);
   });
   // Give the ref to an element so React can manage it for you
@@ -354,7 +382,7 @@ function Foo() {
 ```typescript
 function MyComponent({ prop }) {
   const callback = () => {
-    return "Result";
+    return 'Result';
   };
   const memoizedCallback = useCallback(callback, [prop]);
   // 这里保证传给 child 的 callback 不会变
@@ -373,6 +401,30 @@ function MyComponent({ prop }) {
 const memoizedResult = useMemo(() => expensiveFn(a, b), [a, b]);
 ```
 
+比如 `ReactTable` 示例中用来缓存非常大的 `column` 数据，而不是每次渲染时都重新声明该变量
+
+```ts
+const columns = useMemo(
+  () => [
+    {
+      Header: 'Name',
+      columns: [
+        {
+          Header: 'First Name',
+          accessor: 'firstName',
+        },
+        {
+          Header: 'Last Name',
+          accessor: 'lastName',
+        },
+      ],
+    },
+    // 很长的数组....
+  ],
+  [] // 没有依赖
+);
+```
+
 ## useContext
 
 - 只用来存储不常变的数据
@@ -386,7 +438,7 @@ const memoizedResult = useMemo(() => expensiveFn(a, b), [a, b]);
 
 ```ts
 const [{ data, loading, error }, refetch] = useAxios(
-  "https://jsonplaceholder.typicode.com/posts"
+  'https://jsonplaceholder.typicode.com/posts'
 );
 if (loading) return <p>Loading...</p>;
 if (error) return <p>Error!</p>;
@@ -420,7 +472,7 @@ if (data) {
 ```ts
 const countAtom = atom<number>({
   // <number> 是 default 的类型, 可省略自行推断
-  key: "count-atom",
+  key: 'count-atom',
   default: 1,
 });
 ```
@@ -438,10 +490,10 @@ const setOnlyCount = useSetRecoilState(countAtom); // 只写版本
 ```ts
 export const countSelector = selector<string>({
   // <string> 是 get 返回的类型
-  key: "count-selector",
+  key: 'count-selector',
   get: ({ get }) => {
     const count = get(countAtom); // 取countAtom，修改
-    return count + "em";
+    return count + 'em';
   },
 });
 ```
@@ -456,10 +508,10 @@ const iconSize = useRecoilValue(countSelector);
 
 ```ts
 export const countSelector = selector<string | number>({
-  key: "count-selector",
+  key: 'count-selector',
   get: ({ get }) => {
     const count = get(countAtom); // 取countAtom，修改
-    return count + "em";
+    return count + 'em';
   },
   set: ({ set }, newValue) => {
     const value = parseInt((newValue as string).slice(0, -2));
@@ -475,7 +527,7 @@ export const countSelector = selector<string | number>({
 ```ts
 // 类型为 < default 数据类型，id 类型>
 const elementPositionStateFamily = atomFamily<number[], number>({
-  key: "ElementPosition",
+  key: 'ElementPosition',
   default: [0, 0],
 });
 
@@ -489,7 +541,7 @@ elementPositionStateFamily(3); // atom3
 
 ```ts
 const editState = selectorFamily<number, string>({
-  key: "editState",
+  key: 'editState',
   get: (path: string) => () => {
     return 1;
   },
@@ -501,19 +553,19 @@ const editState = selectorFamily<number, string>({
 });
 
 // in components
-useRecoilValue(editState("mypath/abc"));
+useRecoilValue(editState('mypath/abc'));
 ```
 
 例子:
 
 ```ts
 const myNumberState = atom({
-  key: "MyNumber",
+  key: 'MyNumber',
   default: 2,
 });
 
 const myMultipliedState = selectorFamily({
-  key: "MyMultipliedNumber",
+  key: 'MyMultipliedNumber',
   get:
     (multiplier) =>
     ({ get }) => {
@@ -547,6 +599,7 @@ function MyComponent() {
 - https://chakra-ui.com/
 - https://recoiljs.org/
 - https://www.npmjs.com/package/axios-hooks
+- https://www.npmjs.com/package/react-table
 
 学习
 
