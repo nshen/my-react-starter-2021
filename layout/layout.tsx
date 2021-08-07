@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/layout';
 import React from 'react';
-import Meta from '../components/Meta';
+import Meta from '../buildin-components/Meta';
 
 type Props = {
   children: React.ReactNode;

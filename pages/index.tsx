@@ -1,8 +1,8 @@
-import React from "react";
-import { Flex, Text, Heading, Select } from "@chakra-ui/react";
-import fs from "fs";
-import MotionBadge from "../components/MotionBadge";
-import { useI18n } from "../i18n/Context";
+import { Flex, Heading, Select, Text } from '@chakra-ui/react';
+import fs from 'fs';
+import React from 'react';
+import MotionBadge from '../buildin-components/MotionBadge';
+import { useI18n } from '../i18n/Context';
 
 const Home = (pkg: any) => {
   const { t, locale, setLocale } = useI18n();
@@ -35,7 +35,7 @@ const Home = (pkg: any) => {
         {pkg.description}
       </Text>
       {/* 动画演示 */}
-      <MotionBadge>{"v" + pkg.version}</MotionBadge>
+      <MotionBadge>{'v' + pkg.version}</MotionBadge>
     </Flex>
   );
 };
@@ -43,8 +43,8 @@ const Home = (pkg: any) => {
 // Fetch data at build time.
 // https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation
 export async function getStaticProps() {
-  let file = await fs.promises.readFile("./package.json", {
-    encoding: "utf-8",
+  let file = await fs.promises.readFile('./package.json', {
+    encoding: 'utf-8',
   });
   file = JSON.parse(file);
   return {

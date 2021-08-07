@@ -1,5 +1,5 @@
-import React from "react";
-import ArticleList from "../../components/ArticleList";
+import React from 'react';
+import ArticleList from '../../buildin-components/ArticleList';
 
 type StaitcProps = { articles: { title: string }[] };
 
@@ -16,9 +16,9 @@ export function getStaticProps() {
   return {
     props: {
       articles: [
-        { title: "预渲染列表数据" },
-        { title: "test 22222222222" },
-        { title: "test 333" },
+        { title: '预渲染列表数据' },
+        { title: 'test 22222222222' },
+        { title: 'test 333' },
       ],
     },
   };
