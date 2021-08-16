@@ -42,6 +42,13 @@
 - v0.1.4 : 重构了页面目录，增加了一个 React.momo 示例，一个 [framer-motion](https://github.com/framer/motion) 示例
 - v0.1.5 : 扩展 `next.js` 实现了 `i18n` 功能
 - v0.1.6 : 添加了 [immer](https://immerjs.github.io/immer/) 状态管理库
+- v0.1.7 :
+  - 增加了 `ReactTable` 组件和示例
+  - 增加了 `useImperativeHane` 文档和示例
+  - 增加了 `@chakra-ui/icons` 依赖
+  - `component` 文件夹重命名为 `buildin-components`
+  - `next.js` 更新到 `11.1.0`
+  - 修复静态导出模式时 `i18n` 报错
 
 TODO:
 

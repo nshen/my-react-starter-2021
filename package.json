@@ -1,6 +1,6 @@
 {
   "name": "my-react-starter-2021",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Next.js + Chakra-ui + Recoil + axios-hooks",
   "scripts": {
     "dev": "next dev -p 9867",
