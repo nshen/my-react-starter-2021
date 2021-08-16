@@ -1,11 +1,10 @@
-import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
-import { defaultLocale, localeMap } from "./config";
+import React, { useContext, useState } from 'react';
+import { defaultLocale, localeMap } from './config';
 
 const I18nContext = React.createContext({
   t: localeMap[defaultLocale as keyof typeof localeMap],
   locale: defaultLocale,
-  setLocale: {} as React.Dispatch<React.SetStateAction<string | undefined>>,
+  setLocale: (locale: keyof typeof localeMap) => {},
 });
 
 interface Props {
@@ -13,8 +12,7 @@ interface Props {
 }
 
 export const I18nProvider = ({ children }: Props) => {
-  const router = useRouter();
-  const [locale, setLocale] = useState(router.locale);
+  const [locale, setLocale] = useState(defaultLocale);
   if (locale && localeMap[locale as keyof typeof localeMap]) {
     return (
       <I18nContext.Provider
