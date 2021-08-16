@@ -20,7 +20,7 @@
     "framer-motion": "^4",
     "immer": "^9.0.5",
     "namor": "^2.0.3",
-    "next": "11.0.1",
+    "next": "^11.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-icons": "^4.2.0",
