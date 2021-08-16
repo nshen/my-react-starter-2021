@@ -24,6 +24,7 @@
     - [useCallback](#usecallback)
     - [useMemo](#usememo)
     - [useContext](#usecontext)
+    - [useImperativeHandle](#useimperativehandle)
   - Third party
     - [useAxios](#useaxios)
     - [useRecoilState](#userecoilstate)
@@ -121,6 +122,19 @@ const { t, locale, setLocale } = useI18n();
 
 - TODO
 - atom 状态(查询参数)更新 -> 自动查询数据-> 页面刷新
+- recoil reload
+
+```ts
+const reloadAtom = atom<number>({
+  key: 'reload',
+  default: 0,
+});
+
+export const useReload = () => {
+  const setReloadAtom = useSetRecoilState(reloadAtom);
+  return () => setReloadAtom((id) => id + 1);
+};
+```
 
 ## 命令
 
@@ -329,7 +343,8 @@ useEffect(() => {
 
 ## useRef
 
-- 与 useState 一样可以保存状态，但不引起重渲染
+- 与 `useState` 一样可以保存状态，但`不`引起重渲染
+- 类似原来类的 [实例变量](https://reactjs.org/docs/hooks-faq.html#is-there-something-like-instance-variables)
 
 ```ts
 const ref = useRef(42);
@@ -377,7 +392,7 @@ function Foo() {
 
 ## useCallback
 
-`useCallback` 保证每次渲染都返回同一个 `function`
+`useCallback` , 传入一个 `inline callback` 和一个依赖数组, 保证每次渲染都返回同一个 `function`
 
 ```typescript
 function MyComponent({ prop }) {
@@ -394,12 +409,11 @@ function MyComponent({ prop }) {
 
 ## useMemo
 
-- You may rely on useMemo() as a performance optimization, not as a semantic guarantee
-- Every value referenced inside the function should also appear in the dependencies array
-
 ```typescript
 const memoizedResult = useMemo(() => expensiveFn(a, b), [a, b]);
 ```
+
+传入一个 "create" function, 和一个依赖数组。 `useCallback(fn, deps)` 等于 `useMemo(() => fn, deps)`.
 
 比如 `ReactTable` 示例中用来缓存非常大的 `column` 数据，而不是每次渲染时都重新声明该变量
 
@@ -425,6 +439,9 @@ const columns = useMemo(
 );
 ```
 
+- You may rely on useMemo() as a performance optimization, not as a semantic guarantee
+- Every value referenced inside the function should also appear in the dependencies array
+
 ## useContext
 
 - 只用来存储不常变的数据
@@ -433,6 +450,110 @@ const columns = useMemo(
   示例见 [./i18n/Context](./i18n/Context.tsx)
 
 - 建议使用 `Recoil` 的 `atom` 代替 `Context`
+
+## useImperativeHandle
+
+使用 `useImperativeHandle` 需要先了解 `forwardRef` 的概念
+
+### forwardRef
+
+上层想得封装的组件内部 `Dom节点` 的引用，就需要封装的组件使用 `forwardRef` 把引用传到底层 `Dom` 的 `ref` 上
+
+默认的 React 组件 只接收`props` 参数，为了使 `NestedComponent` 接受 `ref` ，需要用 `forwardRef` 包装起来
+
+```ts
+// forwardRef 到 input 类型
+const NestedComponentWithForwardRef = forwardRef<HTMLInputElement, Props>(
+  function NestedComponent(props, frowardedRef) {
+    return <input {...props} ref={frowardedRef} />;
+  }
+);
+```
+
+`forwardRef` 的 语法：
+
+```ts
+// 注意类型顺序与参数顺序相反
+const Component = React.forwardRef<RefType, PropsType>((props, ref) => {
+  return someComponent;
+});
+```
+
+之后就可以在上层引用到 `input` 了
+
+```ts
+const Index = () => {
+  // nestedInputRef.current 引用到的是子组件的 input 节点
+  const nestedInputRef = useRef<HTMLInputElement>(null);
+  return (
+    <div>
+      <NestedComponentWithForwardRef ref={nestedInputRef} />
+      <Button
+        onClick={(e) => {
+          nestedInputRef.current?.focus(); // 调用input的方法
+        }}
+      >
+    </div>
+  );
+};
+```
+
+### useImperativeHandle
+
+useImperativeHandle 比 `forwardRef` 更进了一步，不仅让 `Parent` 得到 `Child` 的 `Dom` 引用，
+
+更提供了把组件内部的 `API`暴露给 `Parent` 的方法， 相当于可以实现从 `Parent` 调用 `Child` 的方法，使用方式如下：
+
+```ts
+// 子组件传递给父组件的api 类型
+type ChildAPI = {
+  focusAndBlur: () => void;
+};
+
+// 提供 ChildAPI 的子组件
+const NestedComponentWithUseImperativeHandle = forwardRef<ChildAPI, Props>(
+  function NestedComponent(props, forwardedRef) {
+    // local ref
+    const inputRef = useRef<HTMLInputElement>(null);
+    useImperativeHandle(forwardedRef, () => {
+      // 把整个api对象返给Parent
+      return {
+        // 使input得到焦点，一秒后自动失去焦点
+        focusAndBlur: () => {
+          inputRef.current?.focus();
+          setTimeout(() => {
+            inputRef.current?.blur();
+          }, 1000);
+        },
+      };
+      //-------------------------------
+    });
+    return <Input {...props} ref={inputRef}></Input>;
+  }
+);
+```
+
+`Parent` 调用端:
+
+```ts
+const Index = () => {
+  const nestedHandleRef = useRef<ChildAPI>(null);
+  return (
+    <div>
+      <NestedComponentWithUseImperativeHandle ref={nestedHandleRef} />
+      <Button
+        onClick={(e) => {
+          nestedHandleRef.current?.focusAndBlur();
+        }}
+      >
+        focusAndBlur
+      </Button>
+    </div>
+  );
+};
+```
+
+[完整示例](./pages/examples/useImperativeHandle.tsx)
 
 ## useAxios
 
@@ -608,6 +729,7 @@ function MyComponent() {
 - https://fettblog.eu/typescript-react/hooks
 - https://course.learnrecoil.com/
 - Hooks
+  - https://usehooks-typescript.com
   - https://github.com/streamich/react-use
   - https://github.com/rehooks/awesome-react-hooks
   - https://usehooks.com/
