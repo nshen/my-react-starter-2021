@@ -2,8 +2,8 @@ import en from './locales/en-US';
 import zh from './locales/zh-CN';
 
 // 类似 next.config.js 的配置
-const i18n = {
-  localeDetection: false,
+export const i18n = {
+  // localeDetection: false,
   locales: ['zh-CN', 'en-US'],
   defaultLocale: 'en-US',
 };
@@ -12,7 +12,7 @@ export const defaultLocale = i18n.defaultLocale;
 
 /****************************************************
  * 配置语言映射
- * key 与 next.config.js 配置文件中的 i18n.locales 对应
+ * key 与 i18n.locales 对应
  * value 为对应的语言配置
  ****************************************************/
 export const localeMap = {

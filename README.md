@@ -65,19 +65,9 @@ TODO:
 
 #### 多语言
 
-多语言是基于 `next.js` 系统自己实现了 `useI18n()` hooks，支持实时切换语言
+自己实现了 `useI18n()` hooks，支持 SSG 项目，支持实时切换语言
 
-首先修改 `next.config.js`
-
-```js
-  i18n: {
-    localeDetection: false,
-    locales: ["zh-CN", "en-US"],
-    defaultLocale: "en-US",
-  },
-```
-
-然后配置 `/i18n/config.ts` 修改 `map`，对应到语言文件
+配置文件在 `/i18n/config.ts` 修改 `map`，对应到语言文件
 
 ```ts
 import en from './locales/en-US';
