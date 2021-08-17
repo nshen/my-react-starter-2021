@@ -332,6 +332,15 @@ useEffect(() => {
 }, []);
 ```
 
+[useEffect 完整指南](https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/)
+
+- 对 `useEffect` 的依赖要诚实，但要尽量清除 `useEffect` 的依赖
+- 建议把不依赖 `props` 和 `state` 的函数提到组件外面
+- 把仅被 `effect` 使用的函数放到 `effect` 里面
+- `useEffect` 依赖的函数可以考虑用 `useCallback` 包一层，避免频繁改变
+- `useEffect(fn, [])` 和 `componentDidMount` 不一样，`Effect` 拿到的总是定义它的那次渲染中的 `props` 和 `state`。
+  所以即便在回调函数里，你拿到的还是初始的 `props` 和 `state`
+
 ## useLayoutEffect
 
 多数情况下，`side effect` 都是在组件渲染之后同步。 某些特殊情况下副作用导致了立即再重绘，相当于多出来一个中间状态渲染，两次连续渲染导致闪烁的情况出现。
