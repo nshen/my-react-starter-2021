@@ -1,5 +1,5 @@
 import React from 'react';
-import ArticleList from '../../buildin-components/ArticleList';
+import ArticleList from '../../builtin/components/ArticleList';
 
 type StaitcProps = { articles: { title: string }[] };
 

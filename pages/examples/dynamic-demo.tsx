@@ -1,8 +1,7 @@
 import { Button, Flex } from '@chakra-ui/react';
 import useAxios from 'axios-hooks';
 import React from 'react';
-import ArticleList from '../../buildin-components/ArticleList';
-
+import ArticleList from '../../builtin/components/ArticleList';
 type ArticleType = { title: string };
 const DynamicDemo = () => {
   const [{ data, loading, error }, refetch] = useAxios(

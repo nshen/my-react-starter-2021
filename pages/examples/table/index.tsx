@@ -1,7 +1,7 @@
 // 基于 https://codesandbox.io/s/github/tannerlinsley/react-table/tree/master/examples/pagination-controlled?file=/src/App.js
 import { Flex, Select, Text, VStack } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
-import ReactTable from '../../../buildin-components/ReactTable';
+import ReactTable from '../../../builtin/components/ReactTable';
 import makeData from './makeData';
 
 // Let's simulate a large dataset on the server (outside of our component)

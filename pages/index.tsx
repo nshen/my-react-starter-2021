@@ -1,7 +1,7 @@
 import { Flex, Heading, Select, Text } from '@chakra-ui/react';
 import fs from 'fs';
 import React from 'react';
-import MotionBadge from '../buildin-components/MotionBadge';
+import MotionBadge from '../builtin/components/MotionBadge';
 import { localeMap } from '../i18n/config';
 import { useI18n } from '../i18n/Context';
 

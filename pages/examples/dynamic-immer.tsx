@@ -1,6 +1,6 @@
 import produce from 'immer';
 import React, { useEffect, useState } from 'react';
-import ArticleList from '../../buildin-components/ArticleList';
+import ArticleList from '../../builtin/components/ArticleList';
 
 type ArticleType = { title: string };
 const DynamicDemo = () => {

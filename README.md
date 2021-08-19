@@ -52,6 +52,7 @@
 
 TODO:
 
+- https://csslayout.io/
 - https://www.prisma.io/
 - https://trpc.io/
 
@@ -333,13 +334,20 @@ useEffect(() => {
 ```
 
 [useEffect 完整指南](https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/)
+[You don't know useEffect](https://dev.to/trunghieu99tt/you-don-t-know-useeffect-4j9h)
 
 - 对 `useEffect` 的依赖要诚实，但要尽量清除 `useEffect` 的依赖
 - 建议把不依赖 `props` 和 `state` 的函数提到组件外面
 - 把仅被 `effect` 使用的函数放到 `effect` 里面
-- `useEffect` 依赖的函数可以考虑用 `useCallback` 包一层，避免频繁改变
 - `useEffect(fn, [])` 和 `componentDidMount` 不一样，`Effect` 拿到的总是定义它的那次渲染中的 `props` 和 `state`。
   所以即便在回调函数里，你拿到的还是初始的 `props` 和 `state`
+
+React will compare objects/functions by their references. There are 2 common cases that you should count when working with dependencies of type object/function:
+
+Case 1: Objects/functions are the same, but the references are different (the case in our example).
+Case 2: Objects have different values, but their references are the same (this case happens when you partially update the object but don't trigger a re-new action).
+
+- `useEffect` 依赖的函数可以考虑用 `useCallback` 包一层，避免频繁改变
 
 ## useLayoutEffect
 
@@ -411,7 +419,7 @@ function MyComponent({ prop }) {
 }
 ```
 
-建议 [不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
+[不要随便用](https://dmitripavlutin.com/dont-overuse-react-usecallback/)，出现性能问题再考虑
 
 ## useMemo
 
