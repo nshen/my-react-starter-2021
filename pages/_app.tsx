@@ -2,8 +2,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import React from 'react';
 import { RecoilRoot } from 'recoil';
+import Blank from '../builtin/layouts/Blank';
 import { I18nProvider } from '../i18n/Context';
-import Layout from '../layout/layout';
 import theme from '../styles/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -12,9 +12,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChakraProvider resetCSS theme={theme}>
       <RecoilRoot>
         <I18nProvider>
-          <Layout>
+          <Blank>
+            {/* <HolyGrail> */}
+            {/* <SideBar> */}
             <Component {...pageProps} />
-          </Layout>
+            {/* </SideBar> */}
+            {/* </HolyGrail> */}
+          </Blank>
         </I18nProvider>
       </RecoilRoot>
     </ChakraProvider>
