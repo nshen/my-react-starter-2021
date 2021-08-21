@@ -2,6 +2,12 @@
   "name": "my-react-starter-2021",
   "version": "0.1.7",
   "description": "Next.js + Chakra-ui + Recoil + axios-hooks",
+  "author": "nshen <nshen121@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nshen/my-react-starter-2021"
+  },
   "scripts": {
     "dev": "next dev -p 9867",
     "build": "next build",
@@ -25,14 +31,14 @@
     "react-dom": "17.0.2",
     "react-icons": "^4.2.0",
     "react-table": "^7.7.0",
-    "recoil": "^0.3.1"
+    "recoil": "^0.4.0"
   },
   "devDependencies": {
-    "@types/react": "17.0.11",
+    "@types/react": "17.0.19",
     "@types/react-table": "^7.7.2",
-    "eslint": "7.29.0",
-    "eslint-config-next": "11.0.1",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.0",
     "eslint-config-prettier": "^8.3.0",
-    "typescript": "4.3.4"
+    "typescript": "4.3.5"
   }
 }
