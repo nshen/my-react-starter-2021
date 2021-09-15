@@ -9,7 +9,7 @@
     "url": "git+https://github.com/nshen/my-react-starter-2021"
   },
   "scripts": {
-    "dev": "next dev -p 9867",
+    "dev": "NODE_OPTIONS='--inspect' next dev -p 9867",
     "build": "next build",
     "build:static": "next build && next export",
     "start": "next start",
