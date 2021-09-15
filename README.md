@@ -49,10 +49,15 @@
   - `component` 文件夹重命名为 `buildin-components`
   - `next.js` 更新到 `11.1.0`
   - 修复静态导出模式时 `i18n` 报错
+- v0.1.8 :
+  - 更改内置组件目录到 `builtin`
+  - 添加了 `useDebounce`、 `useInterval`、`useTimeout`、`useEventListener` hooks
+  - 添加了 `HolyGrail/SideBar` 布局示例
+  - 添加了 自定义 `scrollbar` 样式示例
+  - 所有依赖更新到 `latest`
 
 TODO:
 
-- https://csslayout.io/
 - https://www.prisma.io/
 - https://trpc.io/
 

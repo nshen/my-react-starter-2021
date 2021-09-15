@@ -1,6 +1,6 @@
 {
   "name": "my-react-starter-2021",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Next.js + Chakra-ui + Recoil + axios-hooks",
   "author": "nshen <nshen121@gmail.com>",
   "license": "MIT",
