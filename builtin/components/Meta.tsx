@@ -1,11 +1,11 @@
-import Head from "next/head";
+import Head from 'next/head';
 
 type MetaProps = typeof defaultProps;
 
 const defaultProps = {
-  title: "Next Starter",
-  keywords: "react, next, starter",
-  description: "next starter",
+  title: 'my-react-starter-2021',
+  keywords: 'react, next, starter',
+  description: 'Next.js + Chakra-ui + Recoil + axios-hooks',
 };
 
 /**
